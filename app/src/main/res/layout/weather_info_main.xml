@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="java.util.Calendar" />
+
+        <variable
+            name="weatherInfo"
+            type="com.example.oham.weatherapp.data.entities.WeatherInfo" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/datetime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:dateTime="@{Calendar.getInstance().getTime()}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="May 18, 5:15 PM" />
+
+        <TextView
+            android:id="@+id/temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@{String.valueOf((int)weatherInfo.main.temp)}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+            android:textSize="68sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/datetime"
+            app:layout_constraintTop_toBottomOf="@+id/datetime"
+            tools:text="35" />
+
+
+        <TextView
+            android:id="@+id/unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="°C"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+            android:textSize="68sp"
+            app:layout_constraintStart_toEndOf="@+id/temperature"
+            app:layout_constraintTop_toTopOf="@+id/temperature"
+            tools:text="°C" />
+
+        <TextView
+            android:id="@+id/max_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{`Max.` + String.valueOf((int)weatherInfo.main.tempMax) + `°`}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintStart_toStartOf="@+id/temperature"
+            app:layout_constraintTop_toBottomOf="@+id/temperature"
+            tools:text="Max 35°" />
+
+        <TextView
+            android:id="@+id/maxin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" - "
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintStart_toEndOf="@+id/max_temp"
+            app:layout_constraintTop_toTopOf="@+id/max_temp"
+            tools:text=" - " />
+
+        <TextView
+            android:id="@+id/min_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{`Min.` + String.valueOf((int)weatherInfo.main.tempMin) + `°`}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintStart_toEndOf="@+id/maxin"
+            app:layout_constraintTop_toTopOf="@+id/maxin"
+
+            tools:text="Min. 35°" />
+
+        <ImageView
+            android:id="@+id/weather_image"
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:weatherIcon="@{weatherInfo.weather[0].icon}"
+            tools:src="@drawable/ic_weather_clear_sky_day" />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{weatherInfo.weather[0].description}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="?attr/colorAccent"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@+id/weather_image"
+            app:layout_constraintStart_toStartOf="@id/weather_image"
+            app:layout_constraintTop_toBottomOf="@+id/weather_image"
+            tools:text="Partly Cloudy" />
+
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/max_temp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:orientation="vertical">
+
+                <include
+                    layout="@layout/weather_variable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    bind:label="@{`Wind Speed`}"
+                    bind:value="@{weatherInfo.wind.speed + ` km/h`}" />
+
+                <include
+                    layout="@layout/weather_variable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    bind:label="@{`Humidity`}"
+                    bind:value="@{String.valueOf(weatherInfo.main.humidity)}" />
+
+                <include
+                    layout="@layout/weather_variable"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    bind:label="@{`Pressure`}"
+                    bind:value="@{String.valueOf(weatherInfo.main.pressure)}" />
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

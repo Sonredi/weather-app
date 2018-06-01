@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="weatherInfo"
+            type="com.example.oham.weatherapp.data.entities.WeatherInfo"/>
+    </data>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include layout="@layout/weather_info_main"
+            android:visibility="@{weatherInfo != null ? View.VISIBLE : View.GONE}"
+            bind:weatherInfo="@{weatherInfo}"/>
+
+            <include layout="@layout/location_not_found"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="@{weatherInfo != null ? View.GONE : View.VISIBLE}"
+                />
+        </FrameLayout>
+
+
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+</layout>
